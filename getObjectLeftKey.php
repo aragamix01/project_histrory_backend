@@ -14,38 +14,39 @@
     $ref = array();
     $check = -1;
     $i = 0;
+    $old = null;
+    $oldKey = null;
+    $oldId = null;
     if ($result = $conn->query($sql)) {
             $dataLength = $conn->query($sql2);
             $dataLength = $dataLength->fetch_object()->num_row;
             while ($obj = $result->fetch_object()) {
-                if($obj->keyword_obj_id == null) {
-                    if ($oldKey != null){
-                        array_push($dataTable,array('key' => $old, 'ref' => $ref));
-                        $check = $obj->obj_id;
+                if ($check == -1) {
+                    $check = $obj->obj_id;
+                }
+                if ($obj->keyword_obj_id == null) {
+                    if($oldId != null) {
+                        array_push($dataTable,array('id' => $oldId, 'name' => $old, 'key' => $ref));
                         $ref = array();
-                        // array_push($ref,$obj->keyword);
+                        $old = null;
                         $oldKey = null;
-                    } else {
-                        array_push($dataTable, array('name' => $obj->obj_title, 'key' => array()));
-                        $check = -1;
-                    }
+                        $oldId = null;
+                    } 
+                    array_push($dataTable, array('id' => $obj->obj_id, 'name' => $obj->obj_title, 'key' => array()));
+                    $check = -1;
                 } else {
-                    if ($check == -1) {
-                        $check = $obj->obj_id;
-                    }
-                    if ($i == $dataLength - 1) {
-                        array_push($ref,$obj->keyword);
-                        array_push($dataTable,array('key' => $obj->obj_title, 'ref' => $ref));
-                    }
-                    if ($obj->obj_id != $check) {
-                        array_push($dataTable,array('key' => $old, 'ref' => $ref));
+                    if ($obj->obj_id != $check && $check = -1) {
+                        if ($oldId != null)
+                            array_push($dataTable,array('id' => $oldId, 'name' => $old, 'key' => $ref));
                         $check = $obj->obj_id;
                         $ref = array();
                         array_push($ref,$obj->keyword);
-                    } else {
+                    }else {
                         array_push($ref,$obj->keyword);
+                        $check = $obj->obj_id;
                         $old = $obj->obj_title;
                         $oldKey = $obj->keyword_obj_id;
+                        $oldId = $obj->obj_id;
                     }
                 }
                 $i++;
@@ -54,4 +55,3 @@
         }
         echo json_encode($dataTable);
 ?>
-//simalar getObject But use left join
