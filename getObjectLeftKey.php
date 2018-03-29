@@ -4,11 +4,11 @@
 
     $sql = "SELECT mo.obj_id, mo.obj_title, mok.keyword_obj_id, mok.keyword , mo.obj_physicals FROM muse_object AS mo
             LEFT JOIN muse_object_keyword AS mok ON mo.obj_id = mok.obj_id
-            ORDER BY mo.obj_id";
+            ORDER BY mo.obj_title";
 
     $sql2 = "SELECT COUNT(mo.obj_id) AS num_row FROM muse_object AS mo
             LEFT JOIN muse_object_keyword AS mok ON mo.obj_id = mok.obj_id
-            ORDER BY mo.obj_id";
+            ORDER BY mo.obj_title";
 
     $dataTable = array();
     $ref = array();
