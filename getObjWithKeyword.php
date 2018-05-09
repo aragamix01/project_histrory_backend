@@ -23,10 +23,10 @@
                     }
                     if ($i == $dataLength - 1) {
                         array_push($ref,$obj->keyword);
-                        array_push($dataTable,array('name' => $obj->obj_title,'desc' => $obj->obj_physicals ,'keyword' => $ref, 'match' => 0));
+                        array_push($dataTable,array('name' => $obj->obj_title,'desc' => $obj->obj_physicals ,'keyword' => $ref, 'match' => 0, 'found' => array()));
                     }
                     if ($obj->obj_id != $check) {
-                        array_push($dataTable,array('name' => $oldName ,'desc' => $oldDesc,'keyword' => $ref, 'match' => 0));
+                        array_push($dataTable,array('name' => $oldName ,'desc' => $oldDesc,'keyword' => $ref, 'match' => 0, 'found' => array()));
                         $check = $obj->obj_id;
                         $ref = array();
                         array_push($ref,$obj->keyword);
